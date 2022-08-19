@@ -91,7 +91,7 @@ new File(path).eachFile{ f->
 
         def targetImage = targetProjectImageList.find {it.getImageName() == targetFileName}
         if (!targetImage) {
-            logger.error('Could not find image with name ' + f.getName())
+            logger.error('Could not find target image with name ' + targetFileName)
             return
         }
         def targetImageData = targetImage.readImageData()
@@ -106,7 +106,7 @@ new File(path).eachFile{ f->
 
         def refImage = sourceProjectImageList.find {it.getImageName() == refFileName}
         if (!refImage) {
-            logger.error('Could not find image with name ' + refFileName)
+            logger.error('Could not find source image with name ' + refFileName)
             return
         }
         def refImageData = refImage.readImageData()
