@@ -99,13 +99,16 @@ new File(path).eachFile{ f->
 
         def refFileName
         if (splitName.size() == 2) {
-            refFileName == splitName[0] + fileNameSep + refStain + "." + imageExt
+            refFileName = splitName[0] + fileNameSep + refStain + "." + imageExt
         } else if (splitName.size() == 3) {
             refFileName = splitName[0] + fileNameSep + splitName[1] + fileNameSep + refStain + "." + imageExt
         }
 
         def refImage = sourceProjectImageList.find {it.getImageName() == refFileName}
-
+        if (!refImage) {
+            logger.error('Could not find image with name ' + refFileName)
+            return
+        }
         def refImageData = refImage.readImageData()
         def refHierarchy = refImageData.getHierarchy()
 
