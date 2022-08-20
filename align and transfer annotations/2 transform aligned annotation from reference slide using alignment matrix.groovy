@@ -1,5 +1,5 @@
 /***********************
-Yau Mun Lim, University College London, 14 Jul 2022
+Yau Mun Lim, University College London, 20 Aug 2022
 Script tested to be working on QuPath v0.3.2.
 
 Adapted from Mike Nelson's post (https://forum.image.sc/t/qupath-multiple-image-alignment-and-object-transfer/35521/2) to work on transformation matrices created from the alignment of multiple target slides onto reference slides in a single QuPath project.
@@ -15,16 +15,22 @@ It will use ALL of the affine transforms in the Affine folder to transform the o
 that are named in the Affine folder. 
 
 Requires creating each affine transformation from the target images so that there are multiple transform files with different names.
+
+HOW TO USE:
+1. This script assumes your source images and target images are in separate projects.
+2. Run this script from the QuPath project containing the target images.
+3. A prompt will appear to select the QuPath project containing the source images.
+4. All annotations will be be transformed using the affine matrix and transferred from the paired source image to the target image.
+
 ***********************/
  
-// SET ME! Delete existing objects
-def deleteExisting = false
+// INPUTS
 
-// SET ME! Change this if things end up in the wrong place
-def createInverse = false
-
-// Specify reference stain
 String fileNameSep = "_" // Separator used in image name
+def deleteExisting = false // Delete existing objects
+def createInverse = false // Change this if things end up in the wrong place
+
+// IMPORTS
 
 import qupath.lib.objects.PathCellObject
 import qupath.lib.objects.PathDetectionObject
@@ -37,6 +43,8 @@ import qupath.lib.roi.interfaces.ROI
 import java.awt.geom.AffineTransform
 
 import static qupath.lib.gui.scripting.QPEx.*
+
+//***********************
 
 // Affine folder path
 def path = buildFilePath(PROJECT_BASE_DIR, 'Affine')

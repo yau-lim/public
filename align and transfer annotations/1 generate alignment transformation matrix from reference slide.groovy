@@ -1,5 +1,5 @@
 /***********************
-Yau Mun Lim, University College London, 14 Jul 2022
+Yau Mun Lim, University College London, 20 Aug 2022
 Script tested to be working on QuPath v0.3.2.
 
 Adapted from:
@@ -12,21 +12,26 @@ This script assumes WSI filenames are in the format:
     or
     slideID<sep>tissueBlock<sep>stain.fileExt
 
-All transformation matrices will be created as aligned to the reference image for every other non-reference (target) images in the project, and stored in the Affine folder.
-
 Performs annotation-based alignment if annotations are present, otherwise uses intensity-based alignment.
 
-Output stored to the Affine folder within the Project folder.
+HOW TO USE:
+1. This script assumes your source images and target images are in separate projects.
+2. Run this script from the QuPath project containing the target images.
+3. A prompt will appear to select the QuPath project containing the source images.
+4. All transformation matrices will be created as aligned to the source image for every paired target images, and stored in the Affine folder in the target QuPath project folder.
+5. The transformation matrices will be used in the next script to transform and transfer all annotations from the source images to the paired target image.
+
 ***********************/
 
 // INPUTS
-//////////////////////////////////
+
 String registrationType="AFFINE"
 String alignMethod = "IMAGE" // "ANNO" for annotation-based or "IMAGE" for intensity-based alignment
 String fileNameSep = "_" // Separator used in image name
-def AutoAlignPixelSize = 40 // downsample factor for calculating transform. Does not affect scaling of output image
+def AutoAlignPixelSize = 20 // downsample factor for calculating transform. Does not affect scaling of output image
 use_single_channel = 0 // Use a single channel from each image for alignment (set to channel number to use). Set to 0 to use all channels.
-/////////////////////////////////
+
+// IMPORTS
 
 import javafx.scene.transform.Affine
 import qupath.lib.gui.scripting.QPEx
@@ -54,6 +59,8 @@ import java.awt.image.ComponentColorModel
 import java.awt.image.DataBuffer
 
 import static qupath.lib.gui.scripting.QPEx.*;
+
+//***********************
 
 // Get list of all images in target project
 def targetProjectImageList = getProject().getImageList()
